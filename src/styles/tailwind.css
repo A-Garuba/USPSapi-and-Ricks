@@ -1,0 +1,28 @@
+/* Injects Tailwind's base styles & any base styles registered by plugins. */
+@tailwind base;
+
+@layer base {
+	.section {
+        @apply relative rounded-2xl border;
+        @apply max-w-xl mx-4 md:mx-auto p-4 my-4;
+        @apply shadow-lg;
+    }
+}
+
+/* Injects Tailwind's component classes & any component classes registered by plugins. */
+@tailwind components;
+
+@layer components {
+	/* custom CSS goes here */
+}
+
+/* Injects Tailwind's utility classes & any utility classes registered by plugins. */
+@tailwind utilities;
+
+@layer utilities {
+	/* custom CSS goes here */
+}
+
+/* Directive controlling where Tailwind injects responsive variations of utilities.
+   By default Tailwind normally append these at the end of your stylesheet. */
+@tailwind screens;
