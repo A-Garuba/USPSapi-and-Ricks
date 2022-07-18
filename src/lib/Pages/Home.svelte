@@ -20,34 +20,32 @@
 	let USPSAddress;
 	let displayAddress: Place;
 
+	/**
+	 * This function makes a call to the USPS API and stores response in local variable 'displayAddress'
+	 * If the API returns an error, we clear 'displayAddress'
+	 */
 	const updateUSPS = async () => {
-		if (
-			values.address.length > 0 ||
-			values.suiteOrApt.length > 0 ||
-			values.city.length > 0 ||
-			values.state.length > 0 ||
-			values.zip.length > 0
-		) {
-			let response = await verifyPlace(values);
-			let parsedRes = parser.parse(response);
+		let response = await verifyPlace(values);
+		let parsedRes = parser.parse(response);
 
-			// if we got an address back, update UI
-			if (!parsedRes.AddressValidateResponse.Address.Error) {
-				USPSAddress = parsedRes.AddressValidateResponse.Address;
-				displayAddress = {
-					address: USPSAddress.Address2 || '',
-					suiteOrApt: USPSAddress.Address1 || '',
-					city: USPSAddress.City || '',
-					state: USPSAddress.State || '',
-					zip: `${USPSAddress.Zip5}-${USPSAddress.Zip4}` || ''
-				};
-			} else {
-				displayAddress = null;
-			}
+		// if we got an address back, update UI
+		if (!parsedRes.AddressValidateResponse.Address.Error) {
+			USPSAddress = parsedRes.AddressValidateResponse.Address;
+			displayAddress = {
+				address: USPSAddress.Address2 || '',
+				suiteOrApt: USPSAddress.Address1 || '',
+				city: USPSAddress.City || '',
+				state: USPSAddress.State || '',
+				zip: `${USPSAddress.Zip5}-${USPSAddress.Zip4}` || ''
+			};
+		} else {
+			displayAddress = null;
 		}
 	};
 
-	//$: console.log(USPSAddress);
+	// make API request when any of the fields change
+	$: if (values.address || values.suiteOrApt || values.city || values.state || values.zip)
+		updateUSPS();
 </script>
 
 <div class="section">
@@ -71,7 +69,6 @@
 			placeholder="Street"
 			on:input={(e) => {
 				values.address = e.currentTarget.value;
-				updateUSPS();
 			}}
 		/>
 
@@ -80,7 +77,6 @@
 			placeholder="Apt/Suite #"
 			on:input={(e) => {
 				values.suiteOrApt = e.currentTarget.value;
-				updateUSPS();
 			}}
 		/>
 
@@ -90,7 +86,6 @@
 				placeholder="City"
 				on:input={(e) => {
 					values.city = e.currentTarget.value;
-					updateUSPS();
 				}}
 			/>
 
@@ -99,7 +94,6 @@
 				placeholder="State"
 				on:input={(e) => {
 					values.state = e.currentTarget.value;
-					updateUSPS();
 				}}
 			/>
 
@@ -108,7 +102,6 @@
 				placeholder="Zip"
 				on:input={(e) => {
 					values.zip = e.currentTarget.value;
-					updateUSPS();
 				}}
 			/>
 		</div>
