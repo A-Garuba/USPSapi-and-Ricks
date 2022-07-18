@@ -1,4 +1,4 @@
-# GoodRCo Assessment
+# USPS API test and some Ricks for fun
 
 ## Technologies
 
